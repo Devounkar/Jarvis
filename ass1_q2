@@ -1,0 +1,90 @@
+import json
+from datetime import datetime
+from collections import defaultdict
+import matplotlib.pyplot as plt
+
+categories = ["Food", "Transportation", "Entertainment", "Amenities", "Medical", "Luxury"]
+spending = []
+def add(date, category, amount):
+    expense = {
+        "category": category,
+        "date": date,
+        "amount": amount
+    }
+    spending.append(expense)
+def edit(index, date=None, category=None, amount=None):
+    if date:
+        spending[index]["date"] = date
+    if category:
+        spending[index]["category"] = category
+    if amount:
+        spending[index]["amount"] = amount
+def delete(index):
+    spending.pop(index)
+def store(file_name="expenses.json"):
+    with open(file_name, "w") as file:
+        json.dump(spending, file)
+def load(file_name="expenses.json"):
+    global spending
+    with open(file_name, "r") as file:
+        spending = json.load(file)
+
+def tExpend(period='month'):
+    today = datetime.today()
+    T = 0
+    for expense in spending:
+        date = datetime.strptime(expense['date'], "YYYY-MM-DD")
+        if period == 'month' and date.month == today.month:
+            T += expense['price']
+        elif period == 'week' and (today - date).days <= 7:
+            T += expense['price']
+    return T
+def catspend():
+    catspending = defaultdict(float)
+    for expense in spending:
+        catspending[expense['category']] += expense['amount']
+    return dict(catspending)
+def most_spent():
+    catspending = catspend()
+    scategories = sorted(catspending.items(), key=lambda x: x[1], reverse=True)
+    return scategories
+
+def plot_catSpend():
+    expenditure = catspend()
+    categories = list(expenditure.keys())
+    amounts = list(expenditure.values())
+
+    plt.figure(figsize=(8, 8))
+    plt.pie(amounts, labels=categories, autopct='%1.1f%%', startangle=140)
+    plt.title("Spending by category")
+    plt.axis('same')
+    plt.show()
+
+def plot_mnthTrends():
+    month_expenses = defaultdict(float)
+    for expense in spending:
+        expense_date = datetime.strptime(expense['date'], "%Y-%m-%d")
+        month_expenses[expense_date.month] += expense['amount']
+
+    months = sorted(month_expenses.keys())
+    amounts = [month_expenses[month] for month in months]
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(months, amounts, marker='o')
+    plt.title("MonthlyTrend")
+    plt.xlabel("Month")
+    plt.ylabel("Amount")
+    plt.xticks(months)
+    plt.grid(True)
+    plt.show()
+
+if __name__ == "main":
+    load()
+    add("2024-12-15", "Food", 20.50)
+    add("2024-12-16", "Transportation", 15.00)
+    store()
+    print(f"Total Spending for this month: ${tExpend('month')}")
+    print(f"Spending by Category: {catspend()}")
+    print(f"Highest Spending Categories: {most_spent()}")
+    plot_catSpend()
+    plot_mnthTrends()
