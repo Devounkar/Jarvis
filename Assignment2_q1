@@ -1,0 +1,11 @@
+import re
+
+def find_phone_numbers(text):
+
+  phone_number_pattern = r"\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{4}"
+  phone_numbers = re.findall(phone_number_pattern, text)
+  return phone_numbers
+sample_text = "Contact information: (555) 123-4567 (office), 555-567-8901 (mobile)"
+found_numbers = find_phone_numbers(sample_text)
+
+print("Found phone numbers:", found_numbers)
