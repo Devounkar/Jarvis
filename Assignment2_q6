@@ -1,0 +1,20 @@
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+
+documents = ["Data science is amazing", "Machine learning is part of data science"]
+print("One-Hot Encoding:")
+one_hot_encoder = CountVectorizer(binary=True) 
+one_hot_matrix = one_hot_encoder.fit_transform(documents)
+print(one_hot_matrix.toarray())
+print("Vocabulary:", one_hot_encoder.vocabulary_)
+
+print("\nBag of Words:")
+bow_encoder = CountVectorizer()
+bow_matrix = bow_encoder.fit_transform(documents)
+print(bow_matrix.toarray())
+print("Vocabulary:", bow_encoder.vocabulary_)
+
+print("\nTF-IDF:")
+tfidf_encoder = TfidfVectorizer()
+tfidf_matrix = tfidf_encoder.fit_transform(documents)
+print(tfidf_matrix.toarray())
+print("Vocabulary:", tfidf_encoder.vocabulary_)
