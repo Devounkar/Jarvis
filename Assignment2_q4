@@ -1,1 +1,9 @@
-
+import spacy
+nlp = spacy.load("en_core_web_sm") 
+text = "NLP is fascinating, and SpaCy makes it even more interesting."
+doc = nlp(text)
+for token in doc:
+    print(f"Word: '{token.text}'")
+    print(f"Part-of-speech: {token.pos_}")
+    print(f"Dependency Relation: {token.dep_}")
+    print("-" * 20)
