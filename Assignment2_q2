@@ -1,7 +1,7 @@
 import spacy
 
 nlp = spacy.load("en_core_web_sm")
-sentence = "Customizing a SpaCy pipeline can be very useful."
+sentence = "SpaCy is a powerful NLP library for tokenization."
 doc = nlp(sentence)
 for word in doc:
     print(f"Word: '{word.text}', Whitespace after: {word.whitespace_}")
